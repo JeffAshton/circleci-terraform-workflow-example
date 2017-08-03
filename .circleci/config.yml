@@ -1,7 +1,8 @@
 version: 2
+
 jobs:
-  plan:
-    working_directory: ~/circleci-terraform-workflow-example
+  build:
+    working_directory: ~/checkout
     docker:
       - image: circleci/node:6.11.1
       - image: consul
@@ -10,15 +11,57 @@ jobs:
 
       - run:
          name: Install terraform
-         command: ~/circleci-terraform-workflow-example/.circleci/install-terraform.sh
+         command: ~/checkout/.circleci/install-terraform.sh
          environment:
            TERRAFORM_VERSION: '0.9.11'
 
+      - run: mkdir -p ~/checkout/workspace
+
       - run:
          name: Terraform plan
-         command: ~/circleci-terraform-workflow-example/.circleci/terraform-plan.sh
+         command: ~/checkout/.circleci/terraform-plan.sh
          pwd: definition
+         environment:
+           OUTPUT_PATH: '~/checkout/workspace/terraform.plan'
 
-      - store_artifacts:
-          path: /var/tmp/plans
-          destination: plans
+      - persist_to_workspace:
+         root: workspace
+         paths:
+           - '*.plan'
+
+  apply:
+    working_directory: ~/checkout
+    docker:
+      - image: circleci/node:6.11.1
+      - image: consul
+    steps:
+      - checkout
+
+      - run:
+         name: Install terraform
+         command: ~/checkout/.circleci/install-terraform.sh
+         environment:
+           TERRAFORM_VERSION: '0.9.11'
+
+      - attach_workspace:
+         at: /tmp/workspace
+
+      - run:
+         name: Terraform apply
+         command: ~/checkout/.circleci/terraform-apply.sh
+         pwd: definition
+         environment:
+           PLAN_PATH: '/tmp/workspace/terraform.plan'
+
+workflows:
+  version: 2
+  plan_and_apply:
+    jobs:
+      - build
+      - waitForApproval:
+         type: approval
+         requires:
+           - build
+      - apply:
+        requires:
+           - waitForApproval
