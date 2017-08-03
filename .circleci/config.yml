@@ -15,17 +15,17 @@ jobs:
          environment:
            TERRAFORM_VERSION: '0.9.11'
 
-      - run: mkdir -p ~/checkout/workspace
+      - run: mkdir -p /var/tmp/workspace
 
       - run:
          name: Terraform plan
          command: ~/checkout/.circleci/terraform-plan.sh
          pwd: definition
          environment:
-           OUTPUT_PATH: ~/checkout/workspace/terraform.plan
+           OUTPUT_PATH: /var/tmp/workspace/terraform.plan
 
       - persist_to_workspace:
-         root: workspace
+         root: /var/tmp/workspace
          paths:
            - '*.plan'
 
@@ -44,14 +44,14 @@ jobs:
            TERRAFORM_VERSION: '0.9.11'
 
       - attach_workspace:
-         at: /tmp/workspace
+         at: /var/tmp/workspace
 
       - run:
          name: Terraform apply
          command: ~/checkout/.circleci/terraform-apply.sh
          pwd: definition
          environment:
-           PLAN_PATH: '/tmp/workspace/terraform.plan'
+           PLAN_PATH: '/var/tmp/workspace/terraform.plan'
 
 workflows:
   version: 2
