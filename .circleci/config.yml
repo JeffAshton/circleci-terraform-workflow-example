@@ -1,4 +1,18 @@
 version: 2
+
+workflows:
+  version: 2
+  plan_and_apply:
+    jobs:
+      - plan
+      - waitForApproval:
+        type: approval
+        requires:
+          - build
+      - apply:
+        requires:
+          - waitForApproval
+
 jobs:
 
   plan:
@@ -52,15 +66,3 @@ jobs:
         environment:
           PLAN_PATH: '/var/tmp/workspace/terraform.plan'
 
-workflows:
-  version: 2
-  plan_and_apply:
-    jobs:
-      - plan
-      - waitForApproval:
-        type: approval
-        requires:
-          - build
-      - apply:
-        requires:
-          - waitForApproval
