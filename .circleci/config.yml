@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  plan:
+    working_directory: ~/circleci-terraform-workflow-example
+    docker:
+      - image: circleci/node:6.11.1
+      - image: consul
+    steps:
+      - checkout
+
+      - run:
+         name: Install terraform
+         command: ~/circleci-terraform-workflow-example/.circleci/install-terraform.sh
+         environment:
+           TERRAFORM_VERSION: '0.9.11'
+
+      - run:
+         name: Terraform plan
+         command: ~/circleci-terraform-workflow-example/.circleci/terraform-plan.sh
+         pwd: definition
+
+      - store_artifacts:
+          path: /var/tmp/plans
+          destination: plans
