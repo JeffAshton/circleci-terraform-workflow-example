@@ -22,7 +22,7 @@ jobs:
          command: ~/checkout/.circleci/terraform-plan.sh
          pwd: definition
          environment:
-           OUTPUT_PATH: '~/checkout/workspace/terraform.plan'
+           OUTPUT_PATH: ~/checkout/workspace/terraform.plan
 
       - persist_to_workspace:
          root: workspace
