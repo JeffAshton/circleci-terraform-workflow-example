@@ -47,7 +47,9 @@ jobs:
       - attach_workspace:
           at: /var/tmp/workspace
 
-      - run: ls /var/tmp/workspace
+      - run:
+         name: Listing Workspace
+         command: ls /var/tmp/workspace
 
       - checkout
 
@@ -63,4 +65,3 @@ jobs:
          pwd: definition
          environment:
            PLAN_PATH: /var/tmp/workspace/terraform.plan
-
