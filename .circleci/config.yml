@@ -43,6 +43,12 @@ jobs:
       - image: circleci/node:6.11.1
       - image: consul
     steps:
+
+      - attach_workspace:
+          at: /var/tmp/workspace
+
+      - show_workspace: ls /var/tmp/workspace
+
       - checkout
 
       - run:
@@ -51,13 +57,10 @@ jobs:
          environment:
            TERRAFORM_VERSION: '0.9.11'
 
-      - attach_workspace:
-          at: /var/tmp/workspace
-
       - run:
          name: Terraform apply
          command: ~/checkout/.circleci/terraform-apply.sh
          pwd: definition
          environment:
-           PLAN_PATH: '/var/tmp/workspace/terraform.plan'
+           PLAN_PATH: /var/tmp/workspace/terraform.plan
 
