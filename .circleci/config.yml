@@ -5,8 +5,8 @@ workflows:
   plan_and_apply:
     jobs:
       - plan
-      - planApproval: { requires: [ 'plan' ], type: approval }
-      - apply: { requires: [ 'planApproval' ] }
+      - plan_approval: { requires: [ 'plan' ], type: approval }
+      - apply: { requires: [ 'plan_approval' ] }
 
 jobs:
 
