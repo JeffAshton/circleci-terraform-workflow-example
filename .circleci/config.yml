@@ -47,7 +47,7 @@ jobs:
       - attach_workspace:
           at: /var/tmp/workspace
 
-      - show_workspace: ls /var/tmp/workspace
+      - run: ls /var/tmp/workspace
 
       - checkout
 
