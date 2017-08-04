@@ -35,7 +35,7 @@ jobs:
 
       - persist_to_workspace:
          root: /var/tmp/workspace
-         paths: [ '*.plan' ]
+         paths: [ '*' ]
 
   apply:
     working_directory: ~/checkout
