@@ -8,7 +8,7 @@ workflows:
       - waitForApproval:
         type: approval
         requires:
-          - build
+          - plan
       - apply:
         requires:
           - waitForApproval
