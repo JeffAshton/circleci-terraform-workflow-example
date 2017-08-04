@@ -52,12 +52,7 @@ jobs:
          command: ls /var/tmp/workspace
 
       - checkout
-
-      - run:
-         name: Install terraform
-         command: ~/checkout/.circleci/install-terraform.sh
-         environment:
-           TERRAFORM_VERSION: '0.9.11'
+      - <<: *install_terraform
 
       - run:
          name: Terraform apply
@@ -65,3 +60,10 @@ jobs:
          pwd: definition
          environment:
            PLAN_PATH: /var/tmp/workspace/terraform.plan
+
+install_terraform: &install_terraform
+  run:
+     name: Install terraform
+     command: ~/checkout/.circleci/install-terraform.sh
+     environment:
+       TERRAFORM_VERSION: '0.9.11'
