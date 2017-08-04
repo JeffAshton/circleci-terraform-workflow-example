@@ -5,13 +5,13 @@ workflows:
   plan_and_apply:
     jobs:
       - plan
-      - waitForApproval:
+      - hold:
         type: approval
         requires:
           - plan
       - apply:
         requires:
-          - waitForApproval
+          - hold
 
 jobs:
 
