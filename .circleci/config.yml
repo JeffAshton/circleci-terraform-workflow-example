@@ -5,8 +5,8 @@ workflows:
   plan_and_apply:
     jobs:
       - plan
-      - hold: { requires: [ 'plan' ], type: approval }
-      - apply: { requires: [ 'hold' ] }
+      - planApproval: { requires: [ 'plan' ], type: approval }
+      - apply: { requires: [ 'planApproval' ] }
 
 jobs:
 
