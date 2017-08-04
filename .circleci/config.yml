@@ -60,3 +60,4 @@ jobs:
          pwd: definition
          environment:
            PLAN_PATH: '/var/tmp/workspace/terraform.plan'
+
